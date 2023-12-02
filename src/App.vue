@@ -16,7 +16,7 @@
 
 <script>
 import TodoItem from "@/components/TodoItem.vue";
-import { mapState, mapActions, mapWritableState } from "pinia";
+import { mapActions, mapWritableState } from "pinia";
 import { useTodoStore } from "@/stores/todos";
 
 export default {
@@ -24,29 +24,11 @@ export default {
   components: {
     TodoItem,
   },
-  data() {
-    // const store = useTodoStore();
-
-    return {
-      // store,
-      // newTodo: store.newTodo,
-      // todoList: store.todoList,
-    };
-  },
   computed: {
     ...mapWritableState(useTodoStore, ["newTodo", "todoList"]),
   },
   methods: {
     ...mapActions(useTodoStore, ["addTodo", "removeTodo", "toggleTodoStatus"]),
-    // addTodo() {
-    //   this.store.addTodo(this.newTodo);
-    // },
-    // removeTodo(id) {
-    //   this.store.removeTodo(id);
-    // },
-    // toggleTodoStatus(id) {
-    //   this.store.toggleTodoStatus(id);
-    // },
   },
 };
 </script>
