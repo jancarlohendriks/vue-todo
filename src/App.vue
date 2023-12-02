@@ -1,11 +1,6 @@
 <template>
   <div id="app">
-    <input
-      type="text"
-      placeholder="Add new to-do"
-      @keydown.enter="handleAddTodo"
-      v-model="newTodo"
-    />
+    <input type="text" v-model="newTodo" name="" id="" />
     <button @click="handleAddTodo">Add To-Do</button>
     <ul>
       <TodoItem

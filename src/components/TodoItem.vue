@@ -1,25 +1,48 @@
 <template>
   <li>
-    <p>
-      <span @click="changeStatus">
+    <p v-if="!isEditing">
+      <div @click="changeStatus">
         <span v-if="todo.done">[x]</span>
         <span v-else>[ ]</span>
-      </span>
+      </div>
       {{ todo.text }}
+      <button @click="startEditing">Edit</button>
       <button @click="removeTodo">Remove Todo</button>
+    </p>
+    <p v-else>
+      <input v-model="editedText" @keyup.enter="saveEdit" />
+      <button @click="saveEdit">Save</button>
+      <button @click="cancelEdit">Cancel</button>
     </p>
   </li>
 </template>
 
 <script>
 export default {
-  props: ["todo"],
+  props: ['todo'],
+  data() {
+    return {
+      isEditing: false,
+      editedText: this.todo.text,
+    };
+  },
   methods: {
     removeTodo() {
-      this.$emit("removeTodo", this.todo.id);
+      this.$emit('removeTodo', this.todo.id);
     },
     changeStatus() {
-      this.$emit("changeStatus", this.todo.id);
+      this.$emit('changeStatus', this.todo.id);
+    },
+    startEditing() {
+      this.isEditing = true;
+    },
+    saveEdit() {
+      this.todo.text = this.editedText;
+      this.isEditing = false;
+    },
+    cancelEdit() {
+      this.isEditing = false;
+      this.editedText = this.todo.text;
     },
   },
 };
