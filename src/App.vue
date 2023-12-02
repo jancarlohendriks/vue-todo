@@ -1,22 +1,23 @@
 <template>
   <div id="app">
-    <input type="text" v-model="newTodo" name="" id="" />
-    <button @click="handleAddTodo">Add To-Do</button>
+    <input type="text" v-model="newTodo" />
+    <button @click="addTodo">Add To-Do</button>
     <ul>
       <TodoItem
-        v-for="todo in filteredTodoList"
+        v-for="todo in todoList"
         :key="todo.id"
         :todo="todo"
-        @removeTodo="handleRemoveTodo"
-        @changeStatus="handleChangeStatus"
+        @removeTodo="removeTodo"
+        @toggleTodoStatus="toggleTodoStatus"
       />
     </ul>
   </div>
 </template>
 
 <script>
-import { v4 as uuid } from "uuid";
 import TodoItem from "@/components/TodoItem.vue";
+import { mapState, mapActions, mapWritableState } from "pinia";
+import { useTodoStore } from "@/stores/todos";
 
 export default {
   name: "App",
@@ -24,47 +25,28 @@ export default {
     TodoItem,
   },
   data() {
+    // const store = useTodoStore();
+
     return {
-      newTodo: "",
-      todoList: [],
+      // store,
+      // newTodo: store.newTodo,
+      // todoList: store.todoList,
     };
   },
   computed: {
-    filteredTodoList() {
-      return this.todoList;
-    },
+    ...mapWritableState(useTodoStore, ["newTodo", "todoList"]),
   },
   methods: {
-    handleAddTodo() {
-      const newTodo = {
-        id: uuid(),
-        text: this.newTodo,
-        done: false,
-      };
-      this.todoList.push(newTodo);
-    },
-    handleRemoveTodo(id) {
-      this.todoList = this.todoList.filter((todo) => todo.id !== id);
-    },
-    handleChangeStatus(id) {
-      const todo = this.todoList.find((todo) => todo.id === id);
-      if (todo) {
-        todo.done = !todo.done;
-      }
-    },
+    ...mapActions(useTodoStore, ["addTodo", "removeTodo", "toggleTodoStatus"]),
+    // addTodo() {
+    //   this.store.addTodo(this.newTodo);
+    // },
+    // removeTodo(id) {
+    //   this.store.removeTodo(id);
+    // },
+    // toggleTodoStatus(id) {
+    //   this.store.toggleTodoStatus(id);
+    // },
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-h1 {
-  font-size: 2em;
-}
-</style>

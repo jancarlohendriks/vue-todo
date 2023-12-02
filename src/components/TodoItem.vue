@@ -1,7 +1,7 @@
 <template>
   <li>
     <p v-if="!isEditing">
-      <div @click="changeStatus">
+      <div @click="toggleTodoStatus">
         <span v-if="todo.done">[x]</span>
         <span v-else>[ ]</span>
       </div>
@@ -30,8 +30,8 @@ export default {
     removeTodo() {
       this.$emit('removeTodo', this.todo.id);
     },
-    changeStatus() {
-      this.$emit('changeStatus', this.todo.id);
+    toggleTodoStatus() {
+      this.$emit('toggleTodoStatus', this.todo.id);
     },
     startEditing() {
       this.isEditing = true;
