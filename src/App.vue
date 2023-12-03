@@ -7,28 +7,18 @@
         v-for="todo in todoList"
         :key="todo.id"
         :todo="todo"
-        @removeTodo="removeTodo"
-        @toggleTodoStatus="toggleTodoStatus"
+        @removeTodo="removeTodo(todo.id)"
+        @toggleTodoStatus="toggleTodoStatus(todo.id)"
       />
     </ul>
   </div>
 </template>
 
-<script>
-import { mapActions, mapWritableState } from "pinia";
-import { useTodoStore } from "@/stores/todos";
+<script setup>
+import { storeToRefs } from "pinia";
 import TodoItem from "@/components/TodoItem.vue";
+import { useTodoStore } from "@/stores/todos";
 
-export default {
-  name: "App",
-  components: {
-    TodoItem,
-  },
-  computed: {
-    ...mapWritableState(useTodoStore, ["newTodo", "todoList"]),
-  },
-  methods: {
-    ...mapActions(useTodoStore, ["addTodo", "removeTodo", "toggleTodoStatus"]),
-  },
-};
+const { addTodo, removeTodo, toggleTodoStatus } = useTodoStore();
+const { newTodo, todoList } = storeToRefs(useTodoStore());
 </script>

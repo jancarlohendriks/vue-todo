@@ -1,13 +1,13 @@
 <template>
   <li>
     <p v-if="!isEditing">
-      <div @click="toggleTodoStatus">
+      <div @click="emit('toggleTodoStatus')">
         <span v-if="todo.done">[x]</span>
         <span v-else>[ ]</span>
       </div>
       {{ todo.text }}
       <button @click="startEditing">Edit</button>
-      <button @click="removeTodo">Remove Todo</button>
+      <button @click="emit('removeTodo')">Remove Todo</button>
     </p>
     <p v-else>
       <input v-model="editedText" @keyup.enter="saveEdit" />
@@ -17,33 +17,25 @@
   </li>
 </template>
 
-<script>
-export default {
-  props: ['todo'],
-  data() {
-    return {
-      isEditing: false,
-      editedText: this.todo.text,
-    };
-  },
-  methods: {
-    removeTodo() {
-      this.$emit('removeTodo', this.todo.id);
-    },
-    toggleTodoStatus() {
-      this.$emit('toggleTodoStatus', this.todo.id);
-    },
-    startEditing() {
-      this.isEditing = true;
-    },
-    saveEdit() {
-      this.todo.text = this.editedText;
-      this.isEditing = false;
-    },
-    cancelEdit() {
-      this.isEditing = false;
-      this.editedText = this.todo.text;
-    },
-  },
+<script setup>
+import { defineProps, defineEmits, ref } from 'vue';
+
+const { todo } = defineProps(['todo']);
+const isEditing = ref(false);
+const editedText = ref(todo.text);
+const emit = defineEmits(['removeTodo', 'toggleTodoStatus'])
+
+const startEditing = () => {
+  isEditing.value = true;
+};
+
+const saveEdit = () => {
+  todo.text = editedText.value;
+  isEditing.value = false;
+};
+
+const cancelEdit = () => {
+  isEditing.value = false;
+  editedText.value = todo.text;
 };
 </script>

@@ -1,6 +1,10 @@
 import { defineStore } from "pinia";
 import { v4 as uuid } from "uuid";
 
+// const toggleProp = (prop, id, todo) => {
+//   return todo.id === id ? { ...todo, [prop]: !todo[prop] } : todo;
+// }
+
 export const useTodoStore = defineStore({
   id: "todos",
   state: () => ({
@@ -8,12 +12,13 @@ export const useTodoStore = defineStore({
     todoList: [],
   }),
   actions: {
-    addTodo(newTodo) {
+    addTodo() {
       this.todoList.push({
         id: uuid(),
         text: this.newTodo,
         done: false,
       });
+      this.newTodo = "";
     },
     removeTodo(id) {
       this.todoList = this.todoList.filter((todo) => todo.id !== id);
@@ -23,6 +28,7 @@ export const useTodoStore = defineStore({
       if (todo) {
         todo.done = !todo.done;
       }
+      // this.todoList = this.todoList.map((todo) => toggleProp('done', id, todo));
     },
   },
 });
