@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import TodoItem from "@/components/TodoItem.vue";
 import { mapActions, mapWritableState } from "pinia";
 import { useTodoStore } from "@/stores/todos";
+import TodoItem from "@/components/TodoItem.vue";
 
 export default {
   name: "App",
