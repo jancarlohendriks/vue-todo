@@ -1,34 +1,70 @@
 import { defineStore } from "pinia";
 import { v4 as uuid } from "uuid";
+import { ref } from "vue";
 
-// const toggleProp = (prop, id, todo) => {
-//   return todo.id === id ? { ...todo, [prop]: !todo[prop] } : todo;
-// }
+// SETUP STORE
+export const useTodoStore = defineStore("todo", () => {
+  const state = {
+    newTodo: ref(""),
+    todoList: ref([]),
+  };
 
-export const useTodoStore = defineStore({
-  id: "todos",
-  state: () => ({
-    newTodo: "",
-    todoList: [],
-  }),
-  actions: {
-    addTodo() {
-      this.todoList.push({
+  const actions = {
+    addTodo: () => {
+      state.todoList.value.push({
         id: uuid(),
-        text: this.newTodo,
+        text: state.newTodo.value,
         done: false,
       });
-      this.newTodo = "";
+      state.newTodo.value = "";
     },
-    removeTodo(id) {
-      this.todoList = this.todoList.filter((todo) => todo.id !== id);
+    removeTodo: (id) => {
+      state.todoList.value = state.todoList.value.filter(
+        (todo) => todo.id !== id
+      );
     },
-    toggleTodoStatus(id) {
-      const todo = this.todoList.find((todo) => todo.id === id);
+    toggleTodoStatus: (id) => {
+      const todo = state.todoList.value.find((t) => t.id === id);
       if (todo) {
         todo.done = !todo.done;
       }
-      // this.todoList = this.todoList.map((todo) => toggleProp('done', id, todo));
     },
-  },
+  };
+
+  return {
+    ...state,
+    ...actions,
+  };
 });
+
+// OPTION STORE
+
+// import { defineStore } from "pinia";
+// import { v4 as uuid } from "uuid";
+
+// export const useTodoStore = defineStore({
+//   id: "todos",
+//   state: () => ({
+//     newTodo: "",
+//     todoList: [],
+//   }),
+//   actions: {
+//     addTodo() {
+//       this.todoList.push({
+//         id: uuid(),
+//         text: this.newTodo,
+//         done: false,
+//       });
+//       this.newTodo = "";
+//     },
+//     removeTodo(id) {
+//       this.todoList = this.todoList.filter((todo) => todo.id !== id);
+//     },
+//     toggleTodoStatus(id) {
+//       const todo = this.todoList.find((todo) => todo.id === id);
+//       if (todo) {
+//         todo.done = !todo.done;
+//       }
+//     },
+//   },
+// });

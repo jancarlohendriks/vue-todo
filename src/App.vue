@@ -16,9 +16,9 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import TodoItem from "@/components/TodoItem.vue";
 import { useTodoStore } from "@/stores/todos";
+import TodoItem from "@/components/TodoItem.vue";
 
-const { addTodo, removeTodo, toggleTodoStatus } = useTodoStore();
 const { newTodo, todoList } = storeToRefs(useTodoStore());
+const { addTodo, removeTodo, toggleTodoStatus } = useTodoStore();
 </script>
